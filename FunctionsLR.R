@@ -21,7 +21,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   ## and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
   # Building values of K
-  K <- unique(y)
+  K <- sort(unique(y))
   
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
   if(sum(X[,1]) != nrow(X)){
@@ -46,11 +46,13 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     stop(paste("Error: Please input a positive penalty value (labmda value)"))
   }
   # Check whether beta_init is NULL. If NULL, initialize beta with p x K matrix of zeroes.
-  if(beta_init = NULL){
-    beta_init <- matrix(0, nrow = ncol(X), ncol = length(K))
+  if(is.null(beta_init) == TRUE){
+    beta_init <- matrix(0, ncol = ncol(X), nrow = length(K))
   }
   # If not NULL, check for compatibility of dimensions with what has been already supplied.
-  
+  if(nrow(beta_init) != length(K) | ncol(beta_init) != ncol(X)){}
+    stop(paste("Error: You initial beta choice is not a compatable length with X or K."))
+  }
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
   

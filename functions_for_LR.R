@@ -3,8 +3,8 @@
 ## Calculating first 
 
 ##Apparently this is called a softmax probability
-soft <- function(X,Beta){
-  z <- (X%*%Beta) ##I do not think this bit is correct. But it is producing values.
+soft <- function(X,beta_init){
+  z <- (X%*%beta_init) ##I do not think this bit is correct. But it is producing values.
   soft <- exp(z) / sum(exp(z)) #this naming method will not store the values, just produce them.
   return(soft)
 }
