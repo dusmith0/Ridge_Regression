@@ -21,11 +21,17 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   ## and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
-  
+  if(sum(X[,1]) != nrow(X)){
+    stop(paste("Please include a row of intercept values being 1"))
+  }
   # Check for compatibility of dimensions between X and Y
-  
+  if(nrow(X) != nrow(Y)){
+    stop(paste("Error: Your supplied responce does not match you length of data."))
+  }
   # Check for compatibility of dimensions between Xt and Yt
-  
+  if(nrow(Xt) != nrow(Yt)){
+    stop(paste("Error: Your supplied test Y does not match you length of test X data."))
+  }
   # Check for compatibility of dimensions between X and Xt
   
   # Check eta is positive
