@@ -20,6 +20,9 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; 
   ## and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
+  # Building values of K
+  K <- unique(y)
+  
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
   if(sum(X[,1]) != nrow(X)){
     stop(paste("Please include a row of intercept values being 1"))
@@ -35,10 +38,17 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   # Check for compatibility of dimensions between X and Xt
   
   # Check eta is positive
-  
+  if(eta < 0){
+    stop(paste("Error: Please input a positive learning rate"))
+  }
   # Check lambda is non-negative
-  
-  # Check whether beta_init is NULL. If NULL, initialize beta with p x K matrix of zeroes. 
+  if(lambda < 0){
+    stop(paste("Error: Please input a positive penalty value (labmda value)"))
+  }
+  # Check whether beta_init is NULL. If NULL, initialize beta with p x K matrix of zeroes.
+  if(beta_init = NULL){
+    beta_init <- matrix(0, nrow = ncol(X), ncol = length(K))
+  }
   # If not NULL, check for compatibility of dimensions with what has been already supplied.
   
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
