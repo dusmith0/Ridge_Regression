@@ -34,6 +34,11 @@ soft <- function(X,beta_init){
 
 soft(X,beta_init)
 
+#Testing objective function:
+a <- c(1,2,3)
+b <- c(1,2,3)
+beta_init <- matrix(c(a,b),nrow=3) 
+
 
 
 
