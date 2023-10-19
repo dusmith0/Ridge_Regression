@@ -15,12 +15,13 @@ b <- c(1,2,3,4,5,6,7,8,9,10)
 c <- c(2,2,3,3,4,4,5,5,6,6)
 X <- matrix(c(a,b,c),ncol=3)
 
-Y <- c(1,1,2,2,3,4,3,2,1,3)
+y <- c(1,1,2,2,3,4,3,2,1,3)
 
 ##Running individual pieces
 #generating K
 K <- sort(unique(y))
 #generating beta_init
+beta_init = NULL
 if(is.null(beta_init) == TRUE){
   beta_init <- matrix(0, ncol = ncol(X), nrow = length(K))
 }

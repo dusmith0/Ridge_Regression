@@ -3,9 +3,15 @@
 ## Calculating first 
 
 ##Apparently this is called a softmax probability
-soft <- function(X,beta_init){
-  z <- (X%*%beta_init) ##I do not think this bit is correct. But it is producing values.
-  soft <- exp(z) / sum(exp(z)) #this naming method will not store the values, just produce them.
+   ##This will store the probability of each input of Xs as a probability against each 
+   ##possible K value (Where K values are each column, and Xs are each row.)
+soft <- function(X,beta_init,K=1){
+  z <- rep(0,3)
+  soft <- matrix(rep(0,nrow(X)*length(K)),nrow=nrow(X))
+  for(i in 1:nrow(X)){
+    z <- apply(beta_init, 1, function(beta_init) (X[i,]%*%(beta_init))) 
+    soft[i,] <- exp(z) / sum(exp(z)) 
+  }
   return(soft)
 }
 
