@@ -15,7 +15,7 @@ b <- c(1,2,3,4,5,6,7,8,9,10)
 c <- c(2,2,3,3,4,4,5,5,6,6)
 X <- matrix(c(a,b,c),ncol=3)
 
-y <- c(1,1,2,2,3,4,3,2,1,3)
+Y <- c(1,1,2,2,3,4,3,2,1,3)
 
 ##Running individual pieces
 #generating K
@@ -34,10 +34,29 @@ soft <- function(X,beta_init){
 
 soft(X,beta_init)
 
-#Testing objective function:
+#Testing objective function:#Not a good test. 
 a <- c(1,2,3)
 b <- c(1,2,3)
 beta_init <- matrix(c(a,b),nrow=3) 
+
+
+#Again trying to test for the objective function:
+#++++++# Run the block below
+a <- rep(1,10)
+b <- c(1,2,3,4,5,6,7,8,9,10)
+c <- c(2,2,3,3,4,4,5,5,6,6)
+X <- matrix(c(a,b,c),ncol=3)
+
+Y <- c(1,1,2,2,3,4,3,2,1,3)
+
+beta_init <- NULL
+
+K <- sort(unique(y))
+
+if(is.null(beta_init) == TRUE){
+  beta_init <- matrix(0, ncol = ncol(X), nrow = length(K))
+}
+#+++++++#
 
 
 

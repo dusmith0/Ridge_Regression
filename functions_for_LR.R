@@ -5,7 +5,7 @@
 ##Apparently this is called a softmax probability
    ##This will store the probability of each input of Xs as a probability against each 
    ##possible K value (Where K values are each column, and Xs are each row.)
-soft <- function(X,beta_init,K){
+find.soft <- function(X,beta_init,K){
   z <- rep(0,ncol(X))
   soft <- matrix(rep(0,nrow(X)*length(K)),nrow=nrow(X))
   for(i in 1:nrow(X)){ #I might be able to make this a nested apply instead of a for loop.
@@ -17,27 +17,32 @@ soft <- function(X,beta_init,K){
 
 
 ##To calculate the Objective Function
-objective <- function(X, K, Beta, lambda, soft){
+objective <- function(soft, K, beta_init, lambda){
   #to find the first bit... with for loop
   obj <- rep(0,nrow(X))
   for(i in 1:nrow(X)){
     obj[i] <- log(soft(X[i,],beta_init,K = Y[i]))
   }
-  
   #With mapply
   mapply(function(q,p){
-    log(soft(X,beta_init,K = Y))
-  })
+    obj <- log(soft(X,beta_init,K = Y))}, X, Y
+  )
   
   #with apply
   apply(X, 2, function(v){
   })
   
+  ##This simplistic case seems to work the best... It requires that soft is already found.
+  for(i in 1:nrow(soft)){
+    obj[i] <- log(soft[i,Y[i]])
+  }
+  total <- sum(obj)
+
   #to apply the penalty to the objective
   penalty <-  (lambda / 2) * sum(apply(beta_init, c(1,2), function(z) z ^ 2)) #This seemed to work if we want a single number
 
     #apply(beta_init, c(1,2), function(z) (z ^ 2))
-  objective <- (penalty - sum)
+  objective <- (penalty - total)
   
   return(objective)
 }
