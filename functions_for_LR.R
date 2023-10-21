@@ -17,9 +17,10 @@ find.soft <- function(X,beta_init,K){
 
 
 ##To calculate the Objective Function
-objective <- function(soft, K, beta_init, lambda){
+find.objective <- function(soft, K, beta_init, lambda){
   #to find the first bit... with for loop
   obj <- rep(0,nrow(X))
+##++++++## Below here is more complex, but not working. 
   for(i in 1:nrow(X)){
     obj[i] <- log(soft(X[i,],beta_init,K = Y[i]))
   }
@@ -31,7 +32,8 @@ objective <- function(soft, K, beta_init, lambda){
   #with apply
   apply(X, 2, function(v){
   })
-  
+##++++++###Above here
+ 
   ##This simplistic case seems to work the best... It requires that soft is already found.
   for(i in 1:nrow(soft)){
     obj[i] <- log(soft[i,Y[i]])
@@ -48,7 +50,7 @@ objective <- function(soft, K, beta_init, lambda){
 }
 
 ##To calculate the Hessian-second matrix derivative
-hessian <- function(X, lambda, eta){
+find.hessian <- function(X, lambda, eta){
   I <- diag(x = 1, nrow = ncol(X), ncol = ncol(X)) ##Check the size of I it might be off. 
   W <- diag(x = (soft * (1 - soft)),nrow = ncol(X)) ##this is not working
   hessian <- eta * solve(t(X) %*% W %*% (X)+lamda %*% I) 
@@ -57,7 +59,7 @@ hessian <- function(X, lambda, eta){
 
 
 ##To calculate the gradiant-first matrix derivative
-gradiant <- function(X, lambda, beta_init, K){
+find.gradiant <- function(X, lambda, beta_init, K){
   gradiant <- t(X)%*%(soft[K,] - Y[K]) + lambda * beta_init[k,]
   return(gradiant)
 }
