@@ -51,12 +51,13 @@ find.objective <- function(soft, K, beta_init, lambda){
 
 ##To calculate the Hessian-second matrix derivative
 create_w <- function(soft,j){
-  diag(x = (soft[,j] * (1 - soft[,j])),nrow = ncol(X)) 
+  n <- nrow(X)
+  diag(x = (soft[,j] * (1 - soft[,j])),nrow = n) #For some reason this fails is I use nrow(X) inside of another function here.
 }
 
-find.hessian <- function(X, lambda, eta, j){
+find.hessian <- function(X, soft, lambda, eta, j){
   I <- diag(x = 1, nrow = ncol(X), ncol = ncol(X)) ##Check the size of I it might be off. 
-  hessian <- eta * solve(t(X) %*% create_w(soft,j) %*% (X)+lamda %*% I) 
+  hessian <- eta * solve(t(X) %*% create_w(soft,j) %*% (X)+lambda * I) 
   return(hessian)
   }
 
@@ -64,13 +65,13 @@ find.hessian <- function(X, lambda, eta, j){
 ##To calculate the gradiant-first matrix derivative  ##is is created to loop through elements j
 find.gradiant <- function(X, lambda, beta_init, j){
   val <- rep(0,nrow(X))
-  for(i in 1:nrow(soft)){ #THis can be accomplished with an apply.
+  for(i in 1:nrow(soft)){ #This can be accomplished with an apply.
     val[i] <- (soft[i,Y[i]] - 1)# Not certain that this is correct or the correct sign.
   }
   val <- matrix(val,ncol=1)
   
   
-  gradiant <- t(t(X)%*%val) + lambda * beta_init[j,]
+  gradiant <- (t(X)%*%val) + lambda * beta_init[j,]
   return(gradiant)
 }
 

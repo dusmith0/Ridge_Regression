@@ -72,7 +72,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     count <- count + 1
     
     for(j in 1:length(K)){
-      beta[j,] <- beta[j,] - find.hessian()*find.gradiant()
+      beta[j,] <- beta[j,] - find.hessian()%*%find.gradiant()
     }
     
     find.objective()
