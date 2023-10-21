@@ -6,7 +6,7 @@
    ##This will store the probability of each input of Xs as a probability against each 
    ##possible K value (Where K values are each column, and Xs are each row.)
 soft <- function(X,beta_init,K){
-  z <- rep(0,3)
+  z <- rep(0,ncol(X))
   soft <- matrix(rep(0,nrow(X)*length(K)),nrow=nrow(X))
   for(i in 1:nrow(X)){ #I might be able to make this a nested apply instead of a for loop.
     z <- apply(beta_init, 1, function(beta_init) (X[i,]%*%(beta_init))) 
@@ -18,17 +18,28 @@ soft <- function(X,beta_init,K){
 
 ##To calculate the Objective Function
 objective <- function(X, K, Beta, lambda, soft){
-  
-  for(i in n){
-    for(j in K){
-      sumlog(soft(j))
-    }
+  #to find the first bit... with for loop
+  obj <- rep(0,nrow(X))
+  for(i in 1:nrow(X)){
+    obj[i] <- log(soft(X[i,],beta_init,K = Y[i]))
   }
-   + (lambda / 2) * sum(apply(beta_init, c(1,2), function(z) z ^ 2)) #This seemed to work if we want a single number
+  
+  #With mapply
+  mapply(function(q,p){
+    log(soft(X,beta_init,K = Y))
+  })
+  
+  #with apply
+  apply(X, 2, function(v){
+  })
+  
+  #to apply the penalty to the objective
+  penalty <-  (lambda / 2) * sum(apply(beta_init, c(1,2), function(z) z ^ 2)) #This seemed to work if we want a single number
 
     #apply(beta_init, c(1,2), function(z) (z ^ 2))
-  return(objective)
+  objective <- (penalty - sum)
   
+  return(objective)
 }
 
 ##To calculate the Hessian-second matrix derivative

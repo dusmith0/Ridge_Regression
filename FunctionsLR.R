@@ -50,7 +50,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     beta_init <- matrix(0, ncol = ncol(X), nrow = length(K))
   }
   # If not NULL, check for compatibility of dimensions with what has been already supplied.
-  if(nrow(beta_init) != length(K) | ncol(beta_init) != ncol(X)){}
+  if(nrow(beta_init) != length(K) | ncol(beta_init) != ncol(X)){
     stop(paste("Error: You initial beta choice is not a compatable length with X or K."))
   }
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
