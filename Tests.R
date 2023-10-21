@@ -1,5 +1,6 @@
 # This is a script to save your own tests for the function
 source("FunctionsLR.R")
+library("microbenchmark")
 
 ##Trying to learn how to use the soft max correctly
 X <- matrix(c(1:10),ncol=2)
@@ -8,6 +9,8 @@ for(i in 1:nrow(X)){
   X[i,] <- t(X[i,])*2
   
 }
+
+
 
 ##Trying to build a second set of data to work with my functions
 a <- rep(1,10)
@@ -60,5 +63,52 @@ if(is.null(beta_init) == TRUE){
 
 
 
+###Checking on some speeds in microbenchmark
+microbenchmark(  ##Retuned 182 nano seconds
+  find.hessian <- function(X, soft, lambda, eta, j){
+    I <- diag(x = 1, nrow = ncol(X), ncol = ncol(X)) ##Check the size of I it might be off. 
+    hessian <- eta * solve(t(X) %*% create_w(soft,j) %*% (X)+lambda * I) 
+    return(hessian)
+  }
+)
+
+microbenchmark(
+  find.hessian <- function(X, soft, lambda, eta, j){ ##This does not seem to be any faster.
+    I <- diag(x = 1, nrow = ncol(X), ncol = ncol(X)) ##Check the size of I it might be off. 
+    hessian <- eta * solve(crossprod((X),create_w(soft,j))%*%(X)+lambda * I) 
+    return(hessian)
+  }
+)
+
+
+##Another Test
+microbenchmark( #occationally is slower then below. 
+find.gradiant <- function(X, lambda, beta_init, j){
+  val <- rep(0,nrow(X))
+  for(i in 1:nrow(soft)){ 
+    val[i] <- (soft[i,Y[i]] - 1)
+  }
+  val <- matrix(val,ncol=1)
+  
+  
+  gradiant <- (t(X)%*%val) + lambda * beta_init[j,]
+  return(gradiant)
+}
+)
+
+
+microbenchmark( #Seems to be around 200 nanoseconds
+  find.gradiant <- function(X, lambda, beta_init, j){
+    val <- rep(0,nrow(X))
+    for(i in 1:nrow(soft)){ 
+      val[i] <- (soft[i,Y[i]] - 1)
+    }
+    val <- matrix(val,ncol=1)
+    
+    
+    gradiant <- crossprod(X,val) + lambda * beta_init[j,]
+    return(gradiant)
+  }
+)
 
 

@@ -71,7 +71,7 @@ find.gradiant <- function(X, lambda, beta_init, j){
   val <- matrix(val,ncol=1)
   
   
-  gradiant <- (t(X)%*%val) + lambda * beta_init[j,]
+  gradiant <- crossprod(X,val) + lambda * beta_init[j,]
   return(gradiant)
 }
 
