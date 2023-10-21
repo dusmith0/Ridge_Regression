@@ -56,6 +56,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
+  beta <- beta_init
   find.soft(X, beta_init,K)
   find.objective(soft,K,beta_init,lambda)
   
@@ -66,11 +67,17 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
-  count <- 1
-  while(count <= numIter){
+  count <- 0
+  while(count < numIter){
     count <- count + 1
     
+    for(j in 1:length(K)){
+      beta[j,] <- beta[j,] - find.hessian()*find.gradiant()
+    }
     
+    find.objective()
+    
+    find.error()
     
   }
     

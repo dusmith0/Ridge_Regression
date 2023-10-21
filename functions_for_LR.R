@@ -61,8 +61,8 @@ find.hessian <- function(X, lambda, eta, j){
   }
 
 
-##To calculate the gradiant-first matrix derivative
-find.gradiant <- function(X, lambda, beta_init, K){
+##To calculate the gradiant-first matrix derivative  ##is is created to loop through elements j
+find.gradiant <- function(X, lambda, beta_init, j){
   val <- rep(0,nrow(X))
   for(i in 1:nrow(soft)){ #THis can be accomplished with an apply.
     val[i] <- (soft[i,Y[i]] - 1)# Not certain that this is correct or the correct sign.
@@ -70,7 +70,7 @@ find.gradiant <- function(X, lambda, beta_init, K){
   val <- matrix(val,ncol=1)
   
   
-  gradiant <- t(t(X)%*%val) + lambda * beta_init[k,]
+  gradiant <- t(t(X)%*%val) + lambda * beta_init[j,]
   return(gradiant)
 }
 
