@@ -50,11 +50,13 @@ find.objective <- function(soft, K, beta_init, lambda){
 }
 
 ##To calculate the Hessian-second matrix derivative
-find.hessian <- function(X, lambda, eta){
+create_w <- function(soft,j){
+  diag(x = (soft[,j] * (1 - soft[,j])),nrow = ncol(X)) 
+}
+
+find.hessian <- function(X, lambda, eta, j){
   I <- diag(x = 1, nrow = ncol(X), ncol = ncol(X)) ##Check the size of I it might be off. 
-  W <- diag(x = (soft[,1] * (1 - soft[,1])),nrow = ncol(X)) 
-  
-  hessian <- eta * solve(t(X) %*% W %*% (X)+lamda %*% I) 
+  hessian <- eta * solve(t(X) %*% create_w(soft,j) %*% (X)+lamda %*% I) 
   return(hessian)
   }
 

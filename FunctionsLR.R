@@ -17,6 +17,7 @@
 # error_test - (numIter + 1) length vector of testing error % at each iteration (+ starting value)
 # objective - (numIter + 1) length vector of objective values of the function that we are minimizing at each iteration (+ starting value)
 LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL){
+  source("functions_for_LR.R")
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; 
   ## and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
@@ -55,9 +56,24 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
+  find.soft(X, beta_init,K)
+  find.objective(soft,K,beta_init,lambda)
+  
+  ##Find training Error
+  
+  ##Find testing Error
+  
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
+  count <- 1
+  while(count <= numIter){
+    count <- count + 1
+    
+    
+    
+  }
+    
  
   # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
   
