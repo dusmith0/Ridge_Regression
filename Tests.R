@@ -135,6 +135,6 @@ microbenchmark(
   find.soft(X,beta_init,K)
 )
 
-microbenchmark( #This was suprizingly slightly slower.
+microbenchmark( #This was surprisingly slightly slower.
   find.soft2(X,beta_init,K)
 )

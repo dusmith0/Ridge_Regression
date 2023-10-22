@@ -8,11 +8,10 @@
 find.soft <- function(X,beta_init,K){
   z <- rep(0,ncol(X))
   soft <- matrix(rep(0,nrow(X)*length(K)),nrow=nrow(X))
-  for(i in 1:nrow(X)){ #I might be able to make this a nested apply instead of a for loop.
-    z <- apply(beta_init, 1, function(beta_init) (X[i,]%*%(beta_init))) 
-    soft[i,] <- exp(z) / sum(exp(z)) 
-  }
-  return(soft)
+  apply(X,1,function(X){
+    z <- apply(beta_init, 1, function(beta_init) (X%*%(beta_init))) 
+    soft <- exp(z) / sum(exp(z)) 
+  })
 }
 
 
