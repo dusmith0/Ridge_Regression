@@ -133,12 +133,24 @@ find.soft2 <- function(X,beta_init,K){
   return(soft)
 }
 
+find.soft3 <- function(X, beta_init) {
+  z <- X %*% t(beta_init)  # Matrix multiplication for z values
+  soft <- exp(z)
+  soft <- soft / rowSums(soft)
+  return(soft)
+}
+
+
 microbenchmark(
   find.soft(X,beta_init,K)
 )
 
 microbenchmark( #This was surprisingly slightly slower.
   find.soft2(X,beta_init,K)
+)
+
+microbenchmark(
+  find.soft3(X,beta_init)
 )
 
 #Another test for speed on the Objective function
