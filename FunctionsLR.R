@@ -17,18 +17,18 @@
 # error_test - (numIter + 1) length vector of testing error % at each iteration (+ starting value)
 # objective - (numIter + 1) length vector of objective values of the function that we are minimizing at each iteration (+ starting value)
 
-LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL){
+LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL){
   source("functions_for_LR.R")
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; 
   ## and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
   # Building values of K
-  K <- sort(unique(Y))
+  K <- sort(unique(y))
   
   # Adjusting for interval counting at 0 to 1
   if(0 %in% K){
     K <- K + 1
-    Y <- Y + 1
+    y <- y + 1
   }
   
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
@@ -36,11 +36,11 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     stop(paste("Please include a row of intercept values being 1"))
   }
   # Check for compatibility of dimensions between X and Y
-  if(nrow(X) != length(Y)){
+  if(nrow(X) != length(y)){
     stop(paste("Error: Your supplied responce does not match you length of data."))
   }
   # Check for compatibility of dimensions between Xt and Yt
-  if(nrow(Xt) != length(Yt)){
+  if(nrow(Xt) != length(yt)){
     stop(paste("Error: Your supplied test Y does not match you length of test X data."))
   }
   # Check for compatibility of dimensions between X and Xt
@@ -75,7 +75,7 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   objective[1] <- find.objective(soft,K,beta_init,lambda)
   
   ## Find training Error
-  error_train <- find.error(soft,Y)
+  error_train <- find.error(soft,y)
   ## Find testing Error
   soft_test <- soft(Xt,beta_init)
   error_test <- find.error(soft_test,yt)
@@ -100,7 +100,7 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   
   soft <- find.soft(X, beta)
   objective[numIter + 1] <- find.objective(soft,K,beta,lambda)
-  error_train[numIter + 1] <- find.error(soft,Y)
+  error_train[numIter + 1] <- find.error(soft,y)
   
   soft_test <- find.soft(Xt,beta)
   error_test[numInter + 1] <- find.error(soft_test,yt)
