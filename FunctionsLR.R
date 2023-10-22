@@ -57,14 +57,13 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
   ##Seting some values
-  beta <- beta_init
   objective <- rep(0,51)
   error_test <- rep(0,51)
   error_train <- rep(0,51)
   
   ##Initial Calculations
   find.soft(X, beta_init,K)
-  find.objective(soft,K,beta_init,lambda)
+  objective[1] <- find.objective(soft,K,beta_init,lambda)
   
   ##Find training Error
   
@@ -74,16 +73,19 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
   count <- 0
+  beta <- beta_init
   while(count < numIter){
     count <- count + 1
     
     for(j in 1:length(K)){
-      beta[j,] <- beta[j,] - find.hessian()%*%find.gradiant()
+      beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
     }
     
-    find.objective()
+    find.soft(X, beta,K)
     
-    find.error()
+    objective[count + 1] <- find.objective(soft,K,beta,lambda)
+    
+    train_error[count + 1] <- find.error()
     
   }
     
