@@ -75,8 +75,10 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   objective[1] <- find.objective(soft,K,beta_init,lambda)
   
   ## Find training Error
-  
+  error_train <- find.error(soft,Y)
   ## Find testing Error
+  soft_test <- soft(Xt,beta_init)
+  error_test <- find.error(soft_test,yt)
   
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
@@ -92,12 +94,16 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     
  
   # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
-#for(j in 1:length(K)){
-#  beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
-#  }
-#  soft <- find.soft(X, beta)
-#  objective[i + 1] <- find.objective(soft,K,beta,lambda)
-#train_error[i + 1] <- find.error()
+  for(j in 1:length(K)){
+    beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
+  }
+  
+  soft <- find.soft(X, beta)
+  objective[numIter + 1] <- find.objective(soft,K,beta,lambda)
+  error_train[numIter + 1] <- find.error(soft,Y)
+  
+  soft_test <- find.soft(Xt,beta)
+  error_test[numInter + 1] <- find.error(soft_test,yt)
   
   ## Return output
   ##########################################################################
