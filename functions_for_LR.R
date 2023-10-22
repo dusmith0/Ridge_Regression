@@ -76,6 +76,7 @@ find.gradiant <- function(X, lambda, beta_init, j){
 }
 
 
-##To updated betas
+##To calculate the error estimates
+
 
 

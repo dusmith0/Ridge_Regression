@@ -56,7 +56,13 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
+  ##Seting some values
   beta <- beta_init
+  objective <- rep(0,51)
+  error_test <- rep(0,51)
+  error_train <- rep(0,51)
+  
+  ##Initial Calculations
   find.soft(X, beta_init,K)
   find.objective(soft,K,beta_init,lambda)
   
