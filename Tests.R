@@ -160,3 +160,30 @@ soft <- find.soft(X,beta_init,K)
 microbenchmark(
   find.objective(soft,K,beta_init,lambda)
 )
+
+
+#Another test to see if the logical instead of sapply is better
+j <- 1 
+
+find.gradiant <- function(X, lambda, beta_init, j){
+  val <- soft[,j] - sapply(Y,function(Y) ifelse(Y == K[j],1,0))
+  #val <- soft[,j] - (Y == K[j]) #I forgot that we can use logical as 0,1 too.
+  gradiant <- crossprod(X,val) + lambda * beta_init[j,]
+  return(gradiant)
+}
+
+find.gradiantl <- function(X, lambda, beta_init, j){
+  #val <- soft[,j] - sapply(Y,function(Y) ifelse(Y == K[j],1,0))
+  val <- soft[,j] - 1*(Y == K[j]) #I forgot that we can use logical as 0,1 too.
+  gradiant <- crossprod(X,val) + lambda * beta_init[j,]
+  return(gradiant)
+}
+
+microbenchmark( #4 milliseconds
+  find.gradiant(X,lambda,beta_init,j)
+)
+
+microbenchmark( #97 microseconds
+  find.gradiantl(X,lambda,beta_init,j)
+)
+
