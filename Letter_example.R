@@ -4,12 +4,14 @@
 #########################
 # Training data
 letter_train <- read.table("Data/letter-train.txt", header = F, colClasses = "numeric")
-y <- Y <- letter_train[, 1]
+Y <- letter_train[, 1]
+y <- Y + 1
 X <- as.matrix(letter_train[, -1])
 
 # Testing data
 letter_test <- read.table("Data/letter-test.txt", header = F, colClasses = "numeric")
-yt <- Yt <- letter_test[, 1]
+Yt <- letter_test[, 1]
+yt <- Yt + 1
 Xt <- as.matrix(letter_test[, -1])
 
 # [ToDo] Make sure to add column for an intercept to X and Xt
@@ -21,7 +23,7 @@ Xt <- cbind(V1,Xt)
 source("FunctionsLR.R")
 
 # [ToDo] Try the algorithm LRMultiClass with lambda = 1 and 50 iterations. Call the resulting object out, i.e. out <- LRMultiClass(...)
-out <- LRMultiClass(X, Y, Xt, Yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL)
+out <- LRMultiClass(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL)
 
 # The code below will draw pictures of objective function, as well as train/test error over the iterations
 plot(out$objective, type = 'o')
