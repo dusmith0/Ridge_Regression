@@ -29,6 +29,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   if(0 %in% K){
     K <- K + 1
     y <- y + 1
+    paste("Warning: The interval for class settings has been adjusted by +1 in this function.")
   }
   
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
@@ -90,6 +91,12 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     }
     soft <- find.soft(X, beta)
     objective[i + 1] <- find.objective(soft,K,beta,lambda)
+    
+    #to store the errors.
+    error_train[i + 1] <- find.error(soft,y)
+    
+    soft_test <- find.soft(Xt,beta)
+    error_test[i + 1] <- find.error(soft_test,yt + 1)
   }
     
  
