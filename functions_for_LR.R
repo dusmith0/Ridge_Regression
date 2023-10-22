@@ -20,17 +20,17 @@ find.soft <- function(X,beta_init,K){
 find.objective <- function(soft, K, beta_init, lambda){
   #to find the first bit... with for loop
 ##++++++## Below here is more complex, but not working. 
-  for(i in 1:nrow(X)){
-    obj[i] <- log(soft(X[i,],beta_init,K = Y[i]))
-  }
+  #for(i in 1:nrow(X)){
+  #  obj[i] <- log(find.soft(X[i,],beta_init,K = Y[i]))
+  #}
   #With mapply
-  mapply(function(q,p){
-    obj <- log(soft(X,beta_init,K = Y))}, X, Y
-  )
+  #mapply(function(q,p){
+  #  obj <- log(soft(X,beta_init,K = Y))}, X, Y
+  #)
   
   #with apply
-  apply(X, 2, function(v){
-  })
+  #apply(X, 2, function(v){
+  #})
 ##++++++###Above here
  
   obj <- rep(0,nrow(X))
@@ -77,6 +77,6 @@ find.gradiant <- function(X, lambda, beta_init, j){
 
 
 ##To calculate the error estimates
-
+Estimate_Prediction <- sqrt(sum((Y - X %*% beta_init) ^ 2))
 
 

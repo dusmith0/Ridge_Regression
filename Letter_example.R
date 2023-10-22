@@ -14,6 +14,7 @@ Xt <- as.matrix(letter_test[, -1])
 
 # [ToDo] Make sure to add column for an intercept to X and Xt
 
+
 # Source the LR function
 source("FunctionsLR.R")
 

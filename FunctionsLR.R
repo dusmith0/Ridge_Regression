@@ -16,28 +16,35 @@
 # error_train - (numIter + 1) length vector of training error % at each iteration (+ starting value)
 # error_test - (numIter + 1) length vector of testing error % at each iteration (+ starting value)
 # objective - (numIter + 1) length vector of objective values of the function that we are minimizing at each iteration (+ starting value)
-LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL){
-  source("functions_for_LR.R")
+source("functions_for_LR.R")
+
+LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL){
+  
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; 
   ## and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
   # Building values of K
-  K <- sort(unique(y))
+  K <- sort(unique(Y))
+  
+  #Adjusting for interval counting at 0 to 1
+  
   
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
   if(sum(X[,1]) != nrow(X)){
     stop(paste("Please include a row of intercept values being 1"))
   }
   # Check for compatibility of dimensions between X and Y
-  if(nrow(X) != nrow(Y)){
+  if(nrow(X) != length(Y)){
     stop(paste("Error: Your supplied responce does not match you length of data."))
   }
   # Check for compatibility of dimensions between Xt and Yt
-  if(nrow(Xt) != nrow(Yt)){
+  if(nrow(Xt) != length(Yt)){
     stop(paste("Error: Your supplied test Y does not match you length of test X data."))
   }
   # Check for compatibility of dimensions between X and Xt
-  
+  if(ncol(X) != ncol(Xt)){
+    stop(paste("Error: Your testing and training data have different beta values"))
+  }
   # Check eta is positive
   if(eta < 0){
     stop(paste("Error: Please input a positive learning rate"))
@@ -62,7 +69,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   error_train <- rep(0,51)
   
   ##Initial Calculations
-  find.soft(X, beta_init,K)
+  soft <- find.soft(X, beta_init,K)
   objective[1] <- find.objective(soft,K,beta_init,lambda)
   
   ##Find training Error
