@@ -27,7 +27,10 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   K <- sort(unique(Y))
   
   #Adjusting for interval counting at 0 to 1
-  
+  if(0 %in% K){
+    K <- K + 1
+    Y <- Y + 1
+  }
   
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
   if(sum(X[,1]) != nrow(X)){
