@@ -33,8 +33,9 @@ find.objective <- function(soft, K, beta_init, lambda){
   total <- sum(obj)
 
   #to apply the penalty to the objective
-  penalty <-  (lambda / 2) * sum(apply(beta_init, c(1,2), function(z) z ^ 2)) #This seemed to work if we want a single number
-
+  penalty <-  (lambda / 2) * sum(beta_init^2) #This definelty does what the below did but much easier....
+  #sum(apply(beta, c(1,2), function(z) z ^ 2)) #This seemed to work if we want a single number
+  
   #apply(beta_init, c(1,2), function(z) (z ^ 2))
   objective <- (penalty - total)
   

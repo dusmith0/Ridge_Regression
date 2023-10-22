@@ -88,15 +88,12 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     for(j in 1:length(K)){
       beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
     }
-    #beta <- apply(beta, 1, function(beta){
-    #  beta - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
-    #})
-    
+
     soft <- find.soft(X, beta)
     
     objective[i + 1] <- find.objective(soft,K,beta,lambda)
     
-    #train_error[count + 1] <- find.error()
+    #train_error[i + 1] <- find.error()
     
   }
     
