@@ -28,7 +28,7 @@ find.objective <- function(soft, K, beta_init, lambda){
   obj <- rep(0,nrow(X))
   ##This simplistic case seems to work the best... It requires that soft is already found.
   for(i in 1:nrow(soft)){
-    obj[i] <- log(soft[i,Y[i]])
+    obj[i] <- log(soft[i,y[i]])
   }
   total <- sum(obj)
   #to apply the penalty to the objective
@@ -56,24 +56,17 @@ find.hessian <- function(X, soft, lambda, eta, j){
 ##To calculate the gradiant-first matrix derivative  ##is is created to loop through elements j
 find.gradiant <- function(X, lambda, beta, j){
   #val <- soft[,j] - sapply(Y,function(Y) ifelse(Y == K[j],1,0))
-  val <- soft[,j] - (Y == K[j]) #I forgot that we can use logical as 0,1 too.
+  val <- soft[,j] - (y == K[j]) #I forgot that we can use logical as 0,1 too.
   gradiant <- crossprod(X,val) + lambda * beta[j,]
   return(gradiant)
 }
 
 
 ##To calculate the error estimates
-Error <- sqrt(sum((Y - X %*% beta_init) ^ 2))
-beta <- beta_init
-for(i in 1:numIter){
-  for(j in 1:length(K)){
-    beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j) %*% find.gradiant(X, lambda, beta, j)
-  }
-  soft <- find.soft(X, beta)
-  objective[i + 1] <- find.objective(soft,K,beta,lambda)
+#Building my error function
+find.error <- function(soft,y){
+  predict <- apply(soft,1,function(soft) which.max(soft))
+  error <- sum(predict != y)/length(y)*100
+  return(error)
 }
 
-soft <- find.soft(X,beta)
-
-predict <- apply(soft,1,function(soft) which.max(soft))
-error <- sum(predict == Y)/length(Y)
