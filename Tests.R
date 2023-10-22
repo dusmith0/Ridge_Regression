@@ -54,7 +54,7 @@ Y <- c(1,1,2,2,3,4,3,2,1,3)
 
 beta_init <- NULL
 
-K <- sort(unique(y))
+K <- sort(unique(Y))
 
 if(is.null(beta_init) == TRUE){
   beta_init <- matrix(0, ncol = ncol(X), nrow = length(K))

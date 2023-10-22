@@ -42,21 +42,23 @@ create_w <- function(soft,j){
 
 find.hessian <- function(X, soft, lambda, eta, j){
   I <- diag(x = 1, nrow = ncol(X), ncol = ncol(X)) ##Check the size of I it might be off. 
-  hessian <- eta * solve(t(X) %*% create_w(soft,j) %*% (X)+lambda * I) 
+  hessian <- eta * solve(t(X) %*% create_w(soft,j) %*% (X) + lambda * I) 
   return(hessian)
   }
 
 
 ##To calculate the gradiant-first matrix derivative  ##is is created to loop through elements j
-find.gradiant <- function(X, lambda, beta_init, j){
-  val <- rep(0,nrow(X))
-  for(i in 1:nrow(soft)){ #This can be accomplished with an apply.
-    val[i] <- (soft[i,Y[i]] - 1)# Not certain that this is correct or the correct sign.
-  }
-  val <- matrix(val,ncol=1)
+find.gradiant <- function(X, lambda, beta, j){
+  #val <- rep(0,nrow(X))
+  #for(i in 1:nrow(soft)){ #This can be accomplished with an apply.
+  #  val[i] <- (soft[i,Y[i]] - 1)# Not certain that this is correct or the correct sign.
+  #}
+  #val <- matrix(val,ncol=1)
   
+  #r <- sapply(Y,function(Y) ifelse(Y == K[j],1,0))
+  val <- soft[,j] - sapply(Y,function(Y) ifelse(Y == K[j],1,0))
   
-  gradiant <- crossprod(X,val) + lambda * beta_init[j,]
+  gradiant <- crossprod(X,val) + lambda * beta[j,]
   return(gradiant)
 }
 
