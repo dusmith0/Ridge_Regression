@@ -187,3 +187,11 @@ microbenchmark( #97 microseconds
   find.gradiantl(X,lambda,beta_init,j)
 )
 
+
+#Building my error function
+find.error <- function(soft,Y){
+  predict <- apply(soft,1,function(soft) which.max(soft))
+  error <- sum(predict != Y)/length(Y)*100
+  return(error)
+}
+
