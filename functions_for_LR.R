@@ -18,21 +18,6 @@ find.soft <- function(X,beta_init,K){
 
 ##To calculate the Objective Function
 find.objective <- function(soft, K, beta_init, lambda){
-  #to find the first bit... with for loop
-##++++++## Below here is more complex, but not working. 
-  #for(i in 1:nrow(X)){
-  #  obj[i] <- log(find.soft(X[i,],beta_init,K = Y[i]))
-  #}
-  #With mapply
-  #mapply(function(q,p){
-  #  obj <- log(soft(X,beta_init,K = Y))}, X, Y
-  #)
-  
-  #with apply
-  #apply(X, 2, function(v){
-  #})
-##++++++###Above here
- 
   obj <- rep(0,nrow(X))
   ##This simplistic case seems to work the best... It requires that soft is already found.
   for(i in 1:nrow(soft)){
@@ -43,7 +28,7 @@ find.objective <- function(soft, K, beta_init, lambda){
   #to apply the penalty to the objective
   penalty <-  (lambda / 2) * sum(apply(beta_init, c(1,2), function(z) z ^ 2)) #This seemed to work if we want a single number
 
-    #apply(beta_init, c(1,2), function(z) (z ^ 2))
+  #apply(beta_init, c(1,2), function(z) (z ^ 2))
   objective <- (penalty - total)
   
   return(objective)
