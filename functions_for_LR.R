@@ -15,7 +15,7 @@
 #  return(soft)
 #}
 
-#apparently this one is much faster, and actually works. I still confused as to why though.
+#This one is much faster, and actually works. I still confused as to why though.
 find.soft <- function(X, beta_init) {
   z <- X %*% t(beta_init)  
   soft <- exp(z)
@@ -31,11 +31,9 @@ find.objective <- function(soft, K, beta_init, lambda){
     obj[i] <- log(soft[i,Y[i]])
   }
   total <- sum(obj)
-
   #to apply the penalty to the objective
   penalty <-  (lambda / 2) * sum(beta_init^2) #This definelty does what the below did but much easier....
   #sum(apply(beta, c(1,2), function(z) z ^ 2)) #This seemed to work if we want a single number
-  
   #apply(beta_init, c(1,2), function(z) (z ^ 2))
   objective <- (penalty - total)
   
@@ -65,6 +63,6 @@ find.gradiant <- function(X, lambda, beta, j){
 
 
 ##To calculate the error estimates
-Estimate_Prediction <- sqrt(sum((Y - X %*% beta_init) ^ 2))
+#Estimate_Prediction <- sqrt(sum((Y - X %*% beta_init) ^ 2))
 
 

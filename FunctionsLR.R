@@ -16,17 +16,16 @@
 # error_train - (numIter + 1) length vector of training error % at each iteration (+ starting value)
 # error_test - (numIter + 1) length vector of testing error % at each iteration (+ starting value)
 # objective - (numIter + 1) length vector of objective values of the function that we are minimizing at each iteration (+ starting value)
-source("functions_for_LR.R")
 
 LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL){
-  
+  source("functions_for_LR.R")
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; 
   ## and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
   # Building values of K
   K <- sort(unique(Y))
   
-  #Adjusting for interval counting at 0 to 1
+  # Adjusting for interval counting at 0 to 1
   if(0 %in% K){
     K <- K + 1
     Y <- Y + 1
@@ -66,40 +65,39 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
-  ##Seting some values
+  ## Seting some values
   objective <- rep(0,51)
   error_test <- rep(0,51)
   error_train <- rep(0,51)
   
-  ##Initial Calculations
+  ## Initial Calculations
   soft <- find.soft(X,beta_init)
   objective[1] <- find.objective(soft,K,beta_init,lambda)
   
-  ##Find training Error
+  ## Find training Error
   
-  ##Find testing Error
+  ## Find testing Error
   
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
   beta <- beta_init
   for(i in 1:numIter){
-    
     for(j in 1:length(K)){
-      beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
+      beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j) %*% find.gradiant(X, lambda, beta, j)
     }
-
     soft <- find.soft(X, beta)
-    
     objective[i + 1] <- find.objective(soft,K,beta,lambda)
-    
-    #train_error[i + 1] <- find.error()
-    
   }
     
  
   # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
-  
+#for(j in 1:length(K)){
+#  beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
+#  }
+#  soft <- find.soft(X, beta)
+#  objective[i + 1] <- find.objective(soft,K,beta,lambda)
+#train_error[i + 1] <- find.error()
   
   ## Return output
   ##########################################################################
