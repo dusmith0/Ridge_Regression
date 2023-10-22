@@ -82,18 +82,19 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
-  count <- 0
   beta <- beta_init
-  while(count < numIter){
-    count <- count + 1
+  for(i in 1:numIter){
     
     for(j in 1:length(K)){
       beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
     }
+    #beta <- apply(beta, 1, function(beta){
+    #  beta - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
+    #})
     
-    soft <- find.soft(X, beta,K)
+    soft <- find.soft(X, beta)
     
-    objective[count + 1] <- find.objective(soft,K,beta,lambda)
+    objective[i + 1] <- find.objective(soft,K,beta,lambda)
     
     #train_error[count + 1] <- find.error()
     
