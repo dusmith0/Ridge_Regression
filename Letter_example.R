@@ -26,14 +26,20 @@ source("FunctionsLR.R")
 out <- LRMultiClass(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL)
 
 # The code below will draw pictures of objective function, as well as train/test error over the iterations
-plot(out$objective, type = 'o')
-plot(out$error_train, type = 'o')
-plot(out$error_test, type = 'o')
+plot(out$objective, type = 'o')  #Final objective was 1779.076
+plot(out$error_train, type = 'o') #Final error_train was 21.70
+plot(out$error_test, type = 'o') #Final error_test was 26.23889
 
 # Feel free to modify the code above for different lambda/eta/numIter values to see how it affects the convergence as well as train/test errors
 
 # [ToDo] Use microbenchmark to time your code with lambda=1 and 50 iterations. To save time, only apply microbenchmark 5 times.
-
+library("microbenchmark")
+microbenchmark(
+  LRMultiClass(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL),
+  times = 5L
+)
 # [ToDo] Report the median time of your code from microbenchmark above in the comments below
 
-# Median time:  (in sec)
+# Median time:  (in sec) 90.96083 seconds. My code is still extremely slow :/
+
+
