@@ -26,11 +26,11 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   K <- sort(unique(y))
   
   # Adjusting for interval counting at 0 to 1, for some reason, R will not run both K and Y in the same catch.
-  #if(0 %in% y){
-  #  y <- y + 1
-  #  K <- K + 1
-  #  paste("Warning: The interval for class settings has been adjusted by +1 in this function.")
-  #}
+  if(0 %in% y){
+    y <- y + 1
+    K <- K + 1
+    paste("Warning: The interval for class settings has been adjusted by +1 in this function.")
+  }
   
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
   if(sum(X[,1]) != nrow(X)){
