@@ -18,19 +18,19 @@
 # objective - (numIter + 1) length vector of objective values of the function that we are minimizing at each iteration (+ starting value)
 
 LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL){
-  source("functions_for_LR.R")
+  #source("functions_for_LR.R")
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; 
   ## and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
   # Building values of K
   K <- sort(unique(y))
   
-  # Adjusting for interval counting at 0 to 1
-  if(0 %in% K){
-    K <- K + 1
-    y <- y + 1
-    paste("Warning: The interval for class settings has been adjusted by +1 in this function.")
-  }
+  # Adjusting for interval counting at 0 to 1, for some reason, R will not run both K and Y in the same catch.
+  #if(0 %in% y){
+  #  y <- y + 1
+  #  K <- K + 1
+  #  paste("Warning: The interval for class settings has been adjusted by +1 in this function.")
+  #}
   
   # Check that the first column of X and Xt are 1s, if not - display appropriate message and stop execution.
   if(sum(X[,1]) != nrow(X)){
@@ -65,6 +65,60 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     stop(paste("Error: You initial beta choice is not a compatable length with X or K."))
   }
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
+  ##########################################################################
+    ## As per instructions my smaller functions are intered here:
+    #This one is much faster, and actually works. I still confused as to why though.
+    find.soft <- function(X, beta_init) {
+      z <- X %*% t(beta_init)  
+      soft <- exp(z)
+      soft <- soft / rowSums(soft)
+      return(soft)
+    }
+  
+    ##To calculate the Objective Function
+    find.objective <- function(soft, K, beta_init, lambda){
+      obj <- rep(0,nrow(X))
+      ##This simplistic case seems to work the best... It requires that soft is already found.
+      for(i in 1:nrow(soft)){
+        obj[i] <- log(soft[i,y[i]])
+      }
+      total <- sum(obj)
+      #to apply the penalty to the objective
+      penalty <-  (lambda / 2) * sum(beta_init^2) #This definelty does what the below did but much easier....
+      #sum(apply(beta, c(1,2), function(z) z ^ 2)) #This seemed to work if we want a single number
+      #apply(beta_init, c(1,2), function(z) (z ^ 2))
+      objective <- (penalty - total)
+    
+      return(objective)
+    }
+  
+    ##To calculate the Hessian-second matrix derivative
+    create_w <- function(soft,j){
+      n <- nrow(X)
+      diag(x = (soft[,j] * (1 - soft[,j])),nrow = n) #For some reason this fails is I use nrow(X) inside of another function here.
+    }
+  
+    find.hessian <- function(X, soft, lambda, eta, j){
+      I <- diag(x = 1, nrow = ncol(X), ncol = ncol(X)) ##Check the size of I it might be off. 
+      hessian <- eta * solve(t(X) %*% create_w(soft,j) %*% (X) + lambda * I) 
+      return(hessian)
+    }
+  
+    ##To calculate the gradiant-first matrix derivative  ##is is created to loop through elements j
+    find.gradiant <- function(X, lambda, beta, j){
+      #val <- soft[,j] - sapply(Y,function(Y) ifelse(Y == K[j],1,0))
+      val <- soft[,j] - (y == K[j]) #I forgot that we can use logical as 0,1 too.
+      gradiant <- crossprod(X,val) + lambda * beta[j,]
+      return(gradiant)
+    }
+  
+    ##To calculate the error estimates
+    find.error <- function(soft,y){
+      predict <- apply(soft,1,function(soft) which.max(soft))
+      error <- sum(predict != y)/length(y)*100
+      return(error)
+    }
+  
   ##########################################################################
   ## Seting some values
   objective <- rep(0,numIter + 2)
