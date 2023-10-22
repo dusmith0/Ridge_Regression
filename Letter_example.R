@@ -13,7 +13,9 @@ Yt <- letter_test[, 1]
 Xt <- as.matrix(letter_test[, -1])
 
 # [ToDo] Make sure to add column for an intercept to X and Xt
-
+V1 <- rep(1,2000)
+X <- cbind(V1,X)
+Xt <- cbind(V1,Xt)
 
 # Source the LR function
 source("FunctionsLR.R")

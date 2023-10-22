@@ -82,7 +82,7 @@ microbenchmark(
 
 
 ##Another Test
-microbenchmark( #occationally is slower then below. 
+microbenchmark( #occasionally is slower then below. 
 find.gradiant <- function(X, lambda, beta_init, j){
   val <- rep(0,nrow(X))
   for(i in 1:nrow(soft)){ 
