@@ -119,6 +119,7 @@ find.soft <- function(X,beta_init,K){
     z <- apply(beta_init, 1, function(beta_init) (X[i,]%*%(beta_init))) 
     soft[i,] <- exp(z) / sum(exp(z)) 
   }
+  return(soft)
 }
 
 
@@ -126,9 +127,10 @@ find.soft2 <- function(X,beta_init,K){
   z <- rep(0,ncol(X))
   soft <- matrix(rep(0,nrow(X)*length(K)),nrow=nrow(X))
   apply(X,1,function(X){
-    z <- apply(beta_init, 1, function(beta_init) (X%*%(beta_init))) 
+  z <- apply(beta_init, 1, function(beta_init) (X%*%(beta_init))) 
     soft <- exp(z) / sum(exp(z)) 
   })
+  return(soft)
 }
 
 microbenchmark(
@@ -137,4 +139,12 @@ microbenchmark(
 
 microbenchmark( #This was surprisingly slightly slower.
   find.soft2(X,beta_init,K)
+)
+
+#Another test for speed on the Objective function
+
+soft <- find.soft(X,beta_init,K)
+
+microbenchmark(
+  find.objective(soft,K,beta_init,lambda)
 )

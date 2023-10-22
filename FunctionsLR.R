@@ -72,7 +72,7 @@ LRMultiClass <- function(X, Y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   error_train <- rep(0,51)
   
   ##Initial Calculations
-  soft <- find.soft(X, beta_init,K)
+  soft <- find.soft2(X,beta_init,K)
   objective[1] <- find.objective(soft,K,beta_init,lambda)
   
   ##Find training Error
