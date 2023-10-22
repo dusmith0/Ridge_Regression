@@ -49,15 +49,7 @@ find.hessian <- function(X, soft, lambda, eta, j){
 
 ##To calculate the gradiant-first matrix derivative  ##is is created to loop through elements j
 find.gradiant <- function(X, lambda, beta, j){
-  #val <- rep(0,nrow(X))
-  #for(i in 1:nrow(soft)){ #This can be accomplished with an apply.
-  #  val[i] <- (soft[i,Y[i]] - 1)# Not certain that this is correct or the correct sign.
-  #}
-  #val <- matrix(val,ncol=1)
-  
-  #r <- sapply(Y,function(Y) ifelse(Y == K[j],1,0))
   val <- soft[,j] - sapply(Y,function(Y) ifelse(Y == K[j],1,0))
-  
   gradiant <- crossprod(X,val) + lambda * beta[j,]
   return(gradiant)
 }
