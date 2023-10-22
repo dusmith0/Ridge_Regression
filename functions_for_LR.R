@@ -63,6 +63,17 @@ find.gradiant <- function(X, lambda, beta, j){
 
 
 ##To calculate the error estimates
-#Estimate_Prediction <- sqrt(sum((Y - X %*% beta_init) ^ 2))
+Error <- sqrt(sum((Y - X %*% beta_init) ^ 2))
+beta <- beta_init
+for(i in 1:numIter){
+  for(j in 1:length(K)){
+    beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j) %*% find.gradiant(X, lambda, beta, j)
+  }
+  soft <- find.soft(X, beta)
+  objective[i + 1] <- find.objective(soft,K,beta,lambda)
+}
 
+soft <- find.soft(X,beta)
 
+predict <- apply(soft,1,function(soft) which.max(soft))
+error <- sum(predict == Y)/length(Y)
