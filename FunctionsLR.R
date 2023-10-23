@@ -25,7 +25,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   # Building values of K
   K <- sort(unique(y))
   
-  # Adjusting for interval counting at 0 to 1, for some reason, R will not run both K and Y in the same catch.
+  # Adjusting for interval counting at 0 to 1,
   if(0 %in% y){
     y <- y + 1
     K <- K + 1
@@ -69,26 +69,14 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     ## As per instructions my smaller functions are intered here:
     #This one is much faster, and actually works. I still confused as to why though.
     find.soft <- function(X, beta_init) {
-      z <- X %*% t(beta_init)  
-      soft <- exp(z)
+      soft <- exp(X %*% t(beta_init))
       soft <- soft / rowSums(soft)
       return(soft)
     }
   
     ##To calculate the Objective Function
     find.objective <- function(soft, K, beta_init, lambda){
-      obj <- rep(0,nrow(X))
-      ##This simplistic case seems to work the best... It requires that soft is already found.
-      for(i in 1:nrow(soft)){
-        obj[i] <- log(soft[i,y[i]])
-      }
-      total <- sum(obj)
-      #to apply the penalty to the objective
-      penalty <-  (lambda / 2) * sum(beta_init^2) #This definelty does what the below did but much easier....
-      #sum(apply(beta, c(1,2), function(z) z ^ 2)) #This seemed to work if we want a single number
-      #apply(beta_init, c(1,2), function(z) (z ^ 2))
-      objective <- (penalty - total)
-    
+      objective <- (((lambda / 2) * sum(beta_init^2)) - sum(log(soft[cbind(1:length(y),y)])))
       return(objective)
     }
   
@@ -106,15 +94,13 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   
     ##To calculate the gradiant-first matrix derivative  ##is is created to loop through elements j
     find.gradiant <- function(X, lambda, beta, j){
-      #val <- soft[,j] - sapply(Y,function(Y) ifelse(Y == K[j],1,0))
-      val <- soft[,j] - (y == K[j]) #I forgot that we can use logical as 0,1 too.
-      gradiant <- crossprod(X,val) + lambda * beta[j,]
+      gradiant <- crossprod(X,(soft[,j] - (y == K[j]))) + lambda * beta[j,]
       return(gradiant)
     }
   
     ##To calculate the error estimates
     find.error <- function(soft,y){
-      predict <- apply(soft,1,function(soft) which.max(soft))
+      predict <- apply(soft,1,which.max)
       error <- sum(predict != y)/length(y)*100
       return(error)
     }
