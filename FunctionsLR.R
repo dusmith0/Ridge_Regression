@@ -106,10 +106,10 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     }
   
   ##########################################################################
-  ## Seting some values
-  objective <- rep(0,numIter + 2)
-  error_test <- rep(0,numIter + 2)
-  error_train <- rep(0,numIter + 2)
+  ## Setting some values
+  objective <- rep(0,numIter + 1)
+  error_test <- rep(0,numIter + 1)
+  error_train <- rep(0,numIter + 1)
   
   ## Initial Calculations
   soft <- find.soft(X,beta_init)
@@ -140,20 +140,6 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     error_test[i + 1] <- find.error(soft_test,yt + 1)
   }
     
- 
-  # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
-  for(j in 1:length(K)){
-    beta[j,] <- beta[j,] - find.hessian(X, soft, lambda, eta, j)%*%find.gradiant(X, lambda, beta, j)
-  }
-  
-  soft <- find.soft(X, beta)
-  objective[numIter + 2] <- find.objective(soft,K,beta,lambda)
-  error_train[numIter + 2] <- find.error(soft,y)
-  
-  soft_test <- find.soft(Xt,beta)
-  error_test[numIter + 2] <- find.error(soft_test,yt + 1) 
-  #note because the iterations of y is y + 1, yt also needs + 1 to match the class iteration of this code.
-  
   ## Return output
   ##########################################################################
   # beta - p x K matrix of estimated beta values after numIter iterations
@@ -162,3 +148,5 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   # objective - (numIter + 1) length vector of objective values of the function that we are minimizing at each iteration (+ starting value)
   return(list(beta = beta, error_train = error_train, error_test = error_test, objective =  objective))
 }
+
+
