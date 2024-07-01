@@ -4,8 +4,8 @@ the enclosed pdf for correct rendering of all equations.**
 ## Multi-class logistic regression
 
 Logistic regression is one of the most popular classifiers. Consider the
-training data consisting of \(n\) samples \((x_i, y_i)\),
-\(x_i\in \mathbb{R}^p\), \(y_i\in \{0, \dots, K-1\}\) (\(K\) classes,
+training data consisting of $\(n\)$ samples $\((x_i, y_i)\)$,
+$\(x_i\in \mathbb{R}^p\)$, $\(y_i\in \{0, \dots, K-1\}\) (\(K\)$ classes,
 the coding starts from 0). For each class \(k\in\{0, \dots, K-1\}\), we
 consider class probabilities for sample \(i\) conditioning on the
 corresponding vector of covariates \(x_i\): \[
