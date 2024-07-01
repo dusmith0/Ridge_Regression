@@ -1,5 +1,5 @@
-**Attention:** Because math rendering of .Rmd is not ideal, please see
-the enclosed pdf for correct rendering of all equations (The pdf file contains the assignment provided to complete the tasks.)
+**Attention: Because math rendering of .Rmd is not ideal, please see
+the enclosed pdf for correct rendering of all equations.**
 
 ## Multi-class logistic regression
 
