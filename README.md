@@ -4,8 +4,8 @@
 
 Logistic regression is one of the most popular classifiers. Consider the
 training data consisting of $`(n)`$ samples $`(x_i, y_i)`$,
-$`(x_i\in \mathbb{R}^p)`$, $`(y_i\in \{0, \dots, K-1\}\) (K)`$ classes,
-the coding starts from 0). For each class $`(k\in\{0, \dots, K-1})`$, we
+$`(x_i\in \mathbb{R}^p)`$, $`(y_i\in \{0, \dots, K-1\}) (K)`$ classes,
+the coding starts from 0). For each class $`(k\in\{0, \dots, K-1\})`$, we
 consider class probabilities for sample $`(i)`$ conditioning on the
 corresponding vector of covariates $`(x_i)`$ 
 
@@ -16,7 +16,7 @@ We assume the following model holds for class probabilities
 $` p_k(x_i) = \frac{e^{x_i^{\top}\beta_k}}{\sum_{l=0}^{K-1}e^{x_i^{\top}\beta_l}}.`$ 
 
 Unlike binary case where there is only one $`(\beta)`$, we now have
-$`(K)`$ vectors $`(\beta_k \in \mathbb{R}^p), (k\in {0,\dots, K-1\})`$,
+$`(K)`$ vectors $`(\beta_k \in \mathbb{R}^p), (k\in \{0,\dots, K-1\})`$,
 one for each class. Because of the constraint that class probabilities
 sum to one, the above model is over-parametrized (in binary logistic, we
 had only one $`(\beta)`$ rather than two, as we can always express one
@@ -69,7 +69,7 @@ $`\beta_k^{(t+1)} = \beta_k^{(t)} - \eta (X^{\top}W_kX + \lambda I)^{-1}\left[X^
 
 where 
 
-$`(1(Y = k)\in \mathbb{R}^n\)`$ is a vector with elements $`(1(y_i=k))`$. Here both $`(W_k)`$ and $`(P_k`)$ depend on $`(\beta^{(t)})`$.
+$`(1(Y = k)\in \mathbb{R}^n)`$ is a vector with elements $`(1(y_i=k))`$. Here both $`(W_k)`$ and $`(P_k`)$ depend on $`(\beta^{(t)})`$.
 
 **Task 2:** **FunctionsLR.R** contains the wrapper for the following
 function
