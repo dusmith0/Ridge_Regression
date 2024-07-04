@@ -69,7 +69,7 @@ $`\beta_k^{(t+1)} = \beta_k^{(t)} - \eta (X^{\top}W_kX + \lambda I)^{-1}\left[X^
 
 where 
 
-$`(1(Y = k)\in \mathbb{R}^n)`$ is a vector with elements $`(1(y_i=k))`$. Here both $`(W_k)`$ and $`(P_k`)$ depend on $`(\beta^{(t)})`$.
+$`(Y = k)\in \mathbb{R}^n`$ is a vector with elements $`(y_i=k)`$. Here both $`(W_k)`$ and $`(P_k`)$ depend on $`(\beta^{(t)})`$.
 
 **Task 2:** **FunctionsLR.R** contains the wrapper for the following
 function
